@@ -14,6 +14,7 @@ dotenv.config();
 
 // Retrieve the Plane API key from environment variables
 const PLANE_API_KEY = process.env.PLANE_API_KEY;
+const PLANE_SERVER_URL = process.env.PLANE_SERVER_URL;
 const PLANE_WORKSPACE_SLUG = process.env.PLANE_WORKSPACE_SLUG;
 
 if (!PLANE_API_KEY) {
@@ -199,7 +200,10 @@ async function callPlaneAPI(
   method: string,
   body?: any
 ): Promise<any> {
-  const baseUrl = `https://api.plane.so/api/v1/workspaces/${PLANE_WORKSPACE_SLUG}`;
+  let baseUrl = 'https://api.plane.so/api/v1/workspaces/';
+  if (PLANE_SERVER_URL) {
+    baseUrl = `${PLANE_SERVER_URL}/api/v1/workspaces/${PLANE_WORKSPACE_SLUG}`;
+  }
   const url = `${baseUrl}${endpoint}`;
 
   const options: RequestInit = {
